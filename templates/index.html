@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>文件上传</title>
+</head>
+
+<body>
+  <h1>文件上传</h1>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit" value="上传">
+  </form>
+  <a href="/image?name=webimage (1).png">a标签测试下载</a>
+
+  <script>
+    const handleClick = () => {
+      const url = `/image?name=webimage (1).png`
+      fetch(url).then(res => res.blob()).then(res => {
+        const imageUrl = URL.createObjectURL(res)
+        const a = document.createElement('a');
+        a.href = imageUrl;
+        a.download = "teststt";
+        a.click();
+      })
+    }
+  </script>
+
+  <input type="button" onclick="handleClick()" value="fetch测试下载">
+
+</body>
+
+</html>
