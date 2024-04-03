@@ -1,7 +1,21 @@
 import os
-from flask import Flask, request, render_template, send_file
+from flask import Flask, request, render_template, send_file, jsonify
+
+from werkzeug.exceptions import RequestEntityTooLarge
 
 app: Flask = Flask(__name__)
+
+app.config["MAX_CONTENT_LENGTH"] = 10
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    if isinstance(e, RequestEntityTooLarge):
+        return jsonify({
+            "test": "文件过大"
+        })
+
+    return e
 
 
 @app.post("/upload")
@@ -25,3 +39,7 @@ def image_url():
 @app.get("/")
 def upload_html() -> str:
     return render_template("index.html")
+
+
+if __name__ == "__main__":
+    app.run(debug=False)
