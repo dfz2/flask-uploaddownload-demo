@@ -3,19 +3,19 @@ from flask import Flask, request, render_template, send_file, jsonify
 
 from werkzeug.exceptions import RequestEntityTooLarge
 
-app: Flask = Flask(__name__)
+from extentions import JinkelaFlask
 
-app.config["MAX_CONTENT_LENGTH"] = 10
+app: Flask = JinkelaFlask(import_name=__name__)
+
+app.config["MAX_CONTENT_LENGTH"] = 1   # 10M
 
 
-@app.errorhandler(Exception)
-def handle_exception(e):
-    if isinstance(e, RequestEntityTooLarge):
-        return jsonify({
-            "test": "文件过大"
-        })
+# @app.errorhandler(Exception)
+# def handle_exception(e):
+#     if isinstance(e, RequestEntityTooLarge):
+#         return jsonify({"test": "文件过大"})
 
-    return e
+#     return e
 
 
 @app.post("/upload")
@@ -23,7 +23,9 @@ def upload() -> str:
     file = request.files["file"]
     filename = file.filename
     file.save(os.path.join("./uploads", filename))
-    return f"文件 {filename} 上传成功"
+    return dict(
+        test=f"文件 {filename} 上传成功",
+    )
 
 
 @app.get("/image")
