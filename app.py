@@ -4,7 +4,7 @@ from flask import Flask, request, render_template, send_file, jsonify
 from werkzeug.exceptions import RequestEntityTooLarge
 
 from datetime import datetime
-from extentions import JinkelaFlask
+from extensions import JinkelaFlask
 
 app: Flask = JinkelaFlask(import_name=__name__)
 
