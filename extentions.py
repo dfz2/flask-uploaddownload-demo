@@ -40,8 +40,8 @@ class JinkelaFlask(Flask):
 
     def __init__(self, **kwargs: t.Any):
         super().__init__(**kwargs)  # noqa
-        for _, ex in default_exceptions.items():
-            self.register_error_handler(ex, self._error_handler)
+        for de in default_exceptions.values():
+            self.register_error_handler(de, self._error_handler)
 
     def _error_handler(self, error: Exception):
         response = jsonify(success=False, message=error.description)

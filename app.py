@@ -3,11 +3,12 @@ from flask import Flask, request, render_template, send_file, jsonify
 
 from werkzeug.exceptions import RequestEntityTooLarge
 
+from datetime import datetime
 from extentions import JinkelaFlask
 
 app: Flask = JinkelaFlask(import_name=__name__)
 
-app.config["MAX_CONTENT_LENGTH"] = 1   # 10M
+app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10M
 
 
 # @app.errorhandler(Exception)
@@ -24,6 +25,7 @@ def upload() -> str:
     filename = file.filename
     file.save(os.path.join("./uploads", filename))
     return dict(
+        test_datetime=datetime.now(),
         test=f"文件 {filename} 上传成功",
     )
 
